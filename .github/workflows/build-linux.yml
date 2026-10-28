@@ -16,4 +16,4 @@ jobs:
       - name: Install dependencies
         run: pip install -r Linux/requirements.txt
       - name: Syntax check
-        run: python -m py_compile Linux/capture.py
+        run: python -m py_compile Linux/capture.py Linux/webapp.py
