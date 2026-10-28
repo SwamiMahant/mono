@@ -20,3 +20,8 @@ jobs:
             -configuration Debug -destination 'generic/platform=iOS' \
             -derivedDataPath /tmp/BlueyFocusDerivedData build \
             CODE_SIGNING_ALLOWED=NO
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-app
+          path: /tmp/BlueyFocusDerivedData/Build/Products/Debug-iphoneos/Bluey.app
