@@ -24,6 +24,7 @@
   <input id="mins" type="number" value="30" min="1" max="240">
   <button onclick="start()">Start focus</button>
   <button onclick="capture()">Capture screen</button>
+  <button onclick="check()">Check screen</button>
   <img id="preview" alt="screen capture">
   <p id="status" class="muted"></p>
 </div>
@@ -33,6 +34,13 @@ async function start(){
     body:JSON.stringify({task:document.getElementById('task').value,minutes:document.getElementById('mins').value})});
   const d = await r.json();
   document.getElementById('status').textContent = 'Started: '+d.task+' ('+d.minutes+' min)';
+}
+
+async function check(){
+  const task=document.getElementById("task").value;
+  const r=await fetch("/check",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({task})});
+  const d=await r.json();
+  document.getElementById("status").textContent = d.activity ? ("Status: "+d.activity) : ("Error: "+(d.error||"unknown"));
 }
 async function capture(){
   const r = await fetch('/capture'); const d = await r.json();
