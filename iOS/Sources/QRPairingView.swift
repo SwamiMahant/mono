@@ -7,11 +7,11 @@ struct QRPairingView: View {
     @State private var error = ""
     var body: some View {
         VStack(spacing: 12) {
-            HStack { Text("Pair your Mac").font(.fredoka(24)); Spacer(); Button("Done") { dismiss() } }
-            Text("Open Bluey's Mac menu > Pair iPhone (QR), then scan the code. Your phone and Mac must be on the same network.")
+            HStack { Text("Pair your Mac").font(.plexSans(24)); Spacer(); Button("Done") { dismiss() } }
+            Text("Open Mono's Mac menu > Pair iPhone (QR), then scan the code. Your phone and Mac must be on the same network.")
                 .font(.plexSans(14))
             QRScanner { text in
-                guard let record = PairingRecord.parse(text) else { error = "That isn't a Bluey pairing code."; return }
+                guard let record = PairingRecord.parse(text) else { error = "That isn't a Mono pairing code."; return }
                 if link.pair(record) { dismiss() } else { error = "Couldn't save pairing securely. Try again." }
             } failure: { error = $0 }
             if !error.isEmpty { Text(error).font(.plexSans(13)).foregroundStyle(.orange) }
@@ -41,7 +41,7 @@ private final class ScannerController: UIViewController, AVCaptureMetadataOutput
         AVCaptureDevice.requestAccess(for: .video) { [weak self] granted in
             DispatchQueue.main.async {
                 guard let self, !self.stopped else { return }
-                guard granted else { self.failure?("Enable Camera for Bluey in iPhone Settings to scan the pairing code."); return }
+                guard granted else { self.failure?("Enable Camera for Mono in iPhone Settings to scan the pairing code."); return }
                 self.configure()
             }
         }

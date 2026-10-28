@@ -104,7 +104,7 @@ private struct ReportCard: View {
 
     private let ink = Color(nsColor: NSColor(hex: Palette.ink))
     private let berry = Color(nsColor: NSColor(hex: Palette.berry2))
-    private let soft = Color(nsColor: NSColor(hex: 0x5D5873))
+    private let soft = Color(nsColor: NSColor(hex: 0x5D5D5D))
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -163,7 +163,7 @@ private struct ReportCard: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .background(
             RoundedRectangle(cornerRadius: 22, style: .continuous)
-                .fill(LinearGradient(colors: [.white, Color(nsColor: NSColor(hex: 0xEEF0FF))], startPoint: .top, endPoint: .bottom))
+                .fill(LinearGradient(colors: [.white, Color(nsColor: NSColor(hex: 0xF1F1F1))], startPoint: .top, endPoint: .bottom))
         )
         .overlay(RoundedRectangle(cornerRadius: 22, style: .continuous).strokeBorder(berry, lineWidth: 2.5))
         .padding(4)
@@ -178,7 +178,7 @@ private struct ReportCard: View {
                 .foregroundStyle(berry)
                 .padding(.top, 3)
             Text(model.report?.title ?? (model.error == nil ? "Researching" : "Research"))
-                .font(.custom("Fredoka", size: 20).weight(.bold))
+                .font(.custom("IBM Plex Sans", size: 20).weight(.bold))
                 .foregroundStyle(ink)
                 .lineLimit(model.expanded ? 3 : 2)
             Spacer(minLength: 4)

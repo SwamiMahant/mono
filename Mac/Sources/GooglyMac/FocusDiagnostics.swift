@@ -8,7 +8,7 @@ enum FocusDiagnostics {
             guard CGPreflightScreenCaptureAccess() else { print("LIVE desktop capture: Screen Recording permission missing"); return 1 }
             do {
                 let screen = try await ScreenReader.snapshot()
-                let decision = try await FocusAPI.classify(screen, session: FocusSession(task: "Build the Bluey focus friend Mac and iPhone apps"), idle: 0)
+                let decision = try await FocusAPI.classify(screen, session: FocusSession(task: "Build the Mono focus friend Mac and iPhone apps"), idle: 0)
                 print("LIVE desktop capture + Decisions: \(decision.activity.rawValue), P(off)=\(decision.probability), confidence=\(decision.confidence). No screenshot saved.")
                 return 0
             } catch { print("LIVE desktop check failed: \(error.localizedDescription)"); return 1 }
@@ -16,8 +16,8 @@ enum FocusDiagnostics {
         for (name, title, task) in [
             ("supporting_tutorial", "CODEX TUTORIAL\nHow to build an app with Codex\nResearch for my next video", "Make a video teaching Codex"),
             ("unrelated_entertainment", "CAT COMPILATION\nFunny cats on trampolines\nUp next: more cat videos", "Prepare the monthly business expense report"),
-            ("twitter_unrelated", "X / HOME / FOR YOU\nFunny football moments\nCelebrity drama and memes\nTrending: weekend plans\nScroll for more entertainment", "Work on the Bluey app inside the Codex app"),
-            ("twitter_research", "X / SEARCH: SwiftUI Bonjour\nFix NWConnection pairing in SwiftUI\nTechnical guide to Bonjour discovery\nCheck service names and TXT records", "Fix Bonjour pairing in the Bluey SwiftUI app")
+            ("twitter_unrelated", "X / HOME / FOR YOU\nFunny football moments\nCelebrity drama and memes\nTrending: weekend plans\nScroll for more entertainment", "Work on the Mono app inside the Codex app"),
+            ("twitter_research", "X / SEARCH: SwiftUI Bonjour\nFix NWConnection pairing in SwiftUI\nTechnical guide to Bonjour discovery\nCheck service names and TXT records", "Fix Bonjour pairing in the Mono SwiftUI app")
         ] {
             let image = NSImage(size: CGSize(width: 960, height: 600))
             image.lockFocus()

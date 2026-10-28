@@ -11,7 +11,7 @@ struct FocusFaceHUD: View {
             HStack(alignment: .top) {
                 VStack(alignment: .leading, spacing: 3) {
                     Text(focus.current.flatMap { $0.status == .ended ? nil : $0.task } ?? "What's the mission?")
-                        .font(.fredoka(22)).lineLimit(2)
+                        .font(.plexSans(22)).lineLimit(2)
                     Text(status).font(.plexMono(10)).foregroundStyle(.white.opacity(0.65))
                     if focus.developerMode {
                         Text("Developer Mode · 4× clock · checks every 10s")
@@ -90,9 +90,9 @@ struct FocusFaceHUD: View {
     }
     private var voiceStatus: String {
         switch live.state {
-        case .asleep: return "Hold Bluey to speak"
+        case .asleep: return "Hold Mono to speak"
         case .waking: return "Voice connecting"
-        case .listening: return "Listening. Hold Bluey to ask"
+        case .listening: return "Listening. Hold Mono to ask"
         case .asking: return "Recording your request"
         case .thinking: return "Thinking"
         case .speaking: return "Replying"
@@ -100,7 +100,7 @@ struct FocusFaceHUD: View {
     }
     private var status: String {
         guard link.connected else { return "Pair your Mac to focus together" }
-        guard let session = focus.current, session.status != .ended else { return "Hold Bluey and describe a task" }
+        guard let session = focus.current, session.status != .ended else { return "Hold Mono and describe a task" }
         guard focus.fresh else { return "Connection lost · monitoring will pause" }
         if session.status == .paused { return "Paused" }
         guard let check = session.checks.last(where: { $0.activity != .paused }) else { return "Focusing together" }
@@ -137,7 +137,7 @@ struct FocusDashboard: View {
                         }
                     }
                     if let finished = focus.current, finished.status == .ended {
-                        Text("Lovely bit of focus.").font(.fredoka(26))
+                        Text("Lovely bit of focus.").font(.plexSans(26))
                         FocusSummary(session: finished)
                             .padding(16).background(Color.white.opacity(0.05), in: RoundedRectangle(cornerRadius: 12))
                     }
@@ -152,8 +152,8 @@ struct FocusDashboard: View {
                             Button("End focus") { focus.command("focusEnd") }
                         }.buttonStyle(.bordered).disabled(!link.connected || !focus.fresh)
                     } else {
-                        Text("A little company. A little focus.").font(.fredoka(26))
-                        Text("Hold Bluey and say what you're working on, or type it here.").font(.plexSans(14))
+                        Text("A little company. A little focus.").font(.plexSans(26))
+                        Text("Hold Mono and say what you're working on, or type it here.").font(.plexSans(14))
                         TextField("What are we working on?", text: $task).textFieldStyle(.roundedBorder)
                             .accessibilityIdentifier("focusTask")
                         Stepper("\(Int(minutes)) minutes", value: $minutes, in: 1...240, step: 5)
@@ -162,20 +162,20 @@ struct FocusDashboard: View {
                             .accessibilityIdentifier("startFocus")
                     }
                     if !focus.message.isEmpty { Text(focus.message).font(.plexSans(13)).foregroundStyle(.secondary) }
-                    Text("While focusing, Bluey sends your main Mac display, task, elapsed time, idle duration and recent check results to OpenAI every \(focus.developerMode ? 10 : 30) real seconds. Brief detours are fine. Stillness isn't distraction.")
+                    Text("While focusing, Mono sends your main Mac display, task, elapsed time, idle duration and recent check results to OpenAI every \(focus.developerMode ? 10 : 30) real seconds. Brief detours are fine. Stillness isn't distraction.")
                         .font(.plexSans(13)).foregroundStyle(.secondary)
-                    Text("Screen Recording is required on Mac; microphone is needed for voice. Screenshots aren't saved by Bluey. Pause, end, lock, sleep or disconnect stops capture. Resume is always manual. OpenAI processing follows your API account's data controls.")
+                    Text("Screen Recording is required on Mac; microphone is needed for voice. Screenshots aren't saved by Mono. Pause, end, lock, sleep or disconnect stops capture. Resume is always manual. OpenAI processing follows your API account's data controls.")
                         .font(.plexSans(13)).foregroundStyle(.secondary)
                     Divider()
-                    Text("Your focus sessions").font(.fredoka(23))
+                    Text("Your focus sessions").font(.plexSans(23))
                     if focus.history.isEmpty { Text("Your first timeline will appear here when you finish.").foregroundStyle(.secondary) }
                     ForEach(focus.history) { session in
                         FocusSummary(session: session)
                             .padding(16).background(Color.white.opacity(0.05), in: RoundedRectangle(cornerRadius: 12))
                     }
                 }.padding(24)
-            }.background(Color.black).navigationTitle("bluey · focus friend")
-                .toolbar { ToolbarItem(placement: .topBarTrailing) { Button("Back to Bluey") { dismiss() } } }
+            }.background(Color.black).navigationTitle("mono · focus friend")
+                .toolbar { ToolbarItem(placement: .topBarTrailing) { Button("Back to Mono") { dismiss() } } }
         }.preferredColorScheme(.dark).tint(Color(hex: Palette.berry2))
     }
 }
@@ -186,7 +186,7 @@ private struct FocusSummary: View {
     @State private var inspection: Inspection?
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text(session.task).font(.fredoka(22))
+            Text(session.task).font(.plexSans(22))
             if session.usedDeveloperMode == true {
                 Text("Developer test · \(FocusSession.clock(session.realActiveElapsed)) real active time · timeline uses focus-clock time")
                     .font(.plexMono(11)).foregroundStyle(.secondary)
@@ -197,8 +197,8 @@ private struct FocusSummary: View {
                 FocusTimeline(session: session).frame(height: 40)
             }.buttonStyle(.plain).accessibilityLabel("Inspect focus checks")
             HStack(spacing: 16) {
-                legend("On task", .green, category: "on_task")
-                legend("Off task", Color(hex: 0xEBAC73), category: "off_task")
+                legend("On task", Color(hex: 0x383838), category: "on_task")
+                legend("Off task", Color(hex: 0xB8B8B8), category: "off_task")
                 legend("Unknown", .gray, category: "uncertain")
             }.font(.plexSans(11))
             Text("Tap a category to see probabilities and confidence. Grey also includes unchecked time. Pauses are excluded.")
@@ -253,7 +253,7 @@ private struct FocusCheckList: View {
                         } label: {
                             VStack(alignment: .leading, spacing: 5) {
                                 HStack {
-                                    Text(check.activity.focusName).font(.fredoka(20))
+                                    Text(check.activity.focusName).font(.plexSans(20))
                                     Spacer()
                                     Text(FocusSession.clock(check.elapsed)).font(.plexMono(12))
                                 }
@@ -302,7 +302,7 @@ private struct FocusCheckDetail: View {
                     Text("This older check saved only the Off task probability and overall confidence. The other probabilities weren't saved.")
                         .foregroundStyle(.secondary)
                 }
-                if check.nudged { Label("Bluey gave a gentle nudge after this check", systemImage: "bubble.left") }
+                if check.nudged { Label("Mono gave a gentle nudge after this check", systemImage: "bubble.left") }
             }
         }.navigationTitle("Check details")
     }
@@ -335,9 +335,9 @@ struct FocusTimeline: View {
                 let start = max(0, check.elapsed - span)
                 let rect = CGRect(x: start / total * size.width, y: 0,
                                   width: min(span, check.elapsed) / total * size.width, height: size.height)
-                context.fill(Path(rect), with: .color(check.activity == .onTask ? .green : Color(hex: 0xEBAC73)))
+                context.fill(Path(rect), with: .color(check.activity == .onTask ? Color(hex: 0x383838) : Color(hex: 0xB8B8B8)))
             }
         }.overlay(Rectangle().stroke(.white.opacity(0.3), lineWidth: 1))
-            .accessibilityLabel("Focus timeline: green on task, peach off task, grey unknown")
+            .accessibilityLabel("Focus timeline: dark on task, light off task, grey unknown")
     }
 }

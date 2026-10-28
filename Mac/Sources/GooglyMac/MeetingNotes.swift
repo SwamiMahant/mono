@@ -42,12 +42,12 @@ enum MeetingNotes {
         let text = """
         # Bluey Notes
 
-        Meeting notes recorded by Riley's Bluey app (the blueberry on the iPhone). One folder per listening \
+        Meeting notes recorded by Riley's Mono app (the blueberry on the iPhone). One folder per listening \
         session, named by start time.
 
         In each session folder:
-        - `notes.md`: the full transcript with timestamps and speaker labels, plus Riley's questions to Bluey, \
-        Bluey's replies and any research reports, in time order. Start here.
+        - `notes.md`: the full transcript with timestamps and speaker labels, plus Riley's questions to Mono, \
+        Mono's replies and any research reports, in time order. Start here.
         - `session.json`: the same data, structured.
         - `audio/`: the raw recording, as five-minute AAC chunks.
 
@@ -148,7 +148,7 @@ enum MeetingNotes {
         let clock = DateFormatter()
         clock.dateFormat = "h:mm:ss a"
 
-        var out = ["# Bluey session: \(day.string(from: started))", ""]
+        var out = ["# Mono session: \(day.string(from: started))", ""]
         if let ended {
             let minutes = Int(ended.timeIntervalSince(started) / 60)
             out.append("Ended \(clock.string(from: ended)) (\(minutes / 60)h \(minutes % 60)m).")
@@ -157,7 +157,7 @@ enum MeetingNotes {
         }
         if pending > 0 { out.append("\(pending) recording chunk(s) still being transcribed; this file updates when they're done.") }
         let asked = entries.filter { $0["kind"] as? String == "asked" }.count
-        if asked > 0 { out.append("Riley asked Bluey \(asked) question(s); they're marked inline below.") }
+        if asked > 0 { out.append("Riley asked Mono \(asked) question(s); they're marked inline below.") }
         out += ["", "## Transcript", ""]
 
         for entry in entries {
@@ -170,9 +170,9 @@ enum MeetingNotes {
             case "heard":
                 out.append("[\(time)] (live) \(text)")
             case "asked":
-                out.append("> **[\(time)] Riley asked Bluey:** \(text)")
+                out.append("> **[\(time)] Riley asked Mono:** \(text)")
             case "reply":
-                out.append("> **Bluey:** \(text)")
+                out.append("> **Mono:** \(text)")
             case "codex":
                 out.append("> **[\(time)] Codex:** \(text)")
             case "report":

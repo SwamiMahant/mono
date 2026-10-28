@@ -104,7 +104,7 @@ final class LiveVoice: NSObject, ObservableObject {
         AVAudioApplication.requestRecordPermission { granted in
             DispatchQueue.main.async {
                 guard granted else {
-                    self.onCaption?("I need the microphone. Turn it on for Bluey in the iPhone's Settings.", true)
+                    self.onCaption?("I need the microphone. Turn it on for Mono in the iPhone's Settings.", true)
                     self.wantAwake = false
                     self.setState(.asleep)
                     return
@@ -112,7 +112,7 @@ final class LiveVoice: NSObject, ObservableObject {
                 guard self.wantAwake, self.state == .waking else { return }
                 do { try self.startAudio() }
                 catch {
-                    self.feedback = "Couldn't start the microphone. Check iPhone Settings > Bluey > Microphone."
+                    self.feedback = "Couldn't start the microphone. Check iPhone Settings > Mono > Microphone."
                     self.onCaption?(self.feedback, true); self.sleep(); return
                 }
                 guard let requestToken = self.requestToken else { self.sleep(); return }
@@ -238,7 +238,7 @@ final class LiveVoice: NSObject, ObservableObject {
     private func ask() {
         askWhenReady = false
         guard turnAudio.canCommit else {
-            feedback = turnAudio.overflowed ? "Voice took too long to connect. Hold Bluey and try again." : "I didn't catch that. Hold Bluey while you say the task."
+            feedback = turnAudio.overflowed ? "Voice took too long to connect. Hold Mono and try again." : "I didn't catch that. Hold Mono while you say the task."
             onCaption?(feedback, true)
             setState(.listening)
             return
@@ -252,7 +252,7 @@ final class LiveVoice: NSObject, ObservableObject {
         DispatchQueue.main.asyncAfter(deadline: .now() + 15) { [weak self] in
             guard let self, self.voiceRequest == request, self.waitingForCommit || self.awaitingTranscript != nil else { return }
             self.waitingForCommit = false; self.awaitingTranscript = nil
-            self.feedback = "I couldn't transcribe that. Hold Bluey and try the task again."
+            self.feedback = "I couldn't transcribe that. Hold Mono and try the task again."
             self.onCaption?(self.feedback, true); self.setState(.listening)
         }
         // Only request a response after this committed turn has a non-empty transcription.
@@ -380,13 +380,13 @@ final class LiveVoice: NSObject, ObservableObject {
                     awaitingTranscript = nil
                     let words = text.trimmingCharacters(in: .whitespacesAndNewlines)
                     if words.isEmpty {
-                        feedback = "I didn't hear a task. Hold Bluey while you say it."
+                        feedback = "I didn't hear a task. Hold Mono while you say it."
                         onCaption?(feedback, true); setState(.listening)
                     } else {
                         send(["type": "conversation.item.create", "item": ["type": "message", "role": "user",
                             "content": [["type": "input_text", "text": words]]]])
                         send(["type": "conversation.item.create", "item": ["type": "message", "role": "system",
-                            "content": [["type": "input_text", "text": "The preceding words were explicitly spoken while holding Bluey. When they describe work, call focus_start with task and optional minutes (default 30). Never merely say you're ready. For questions use the appropriate tool. Keep existing safety/personality instructions."]]]])
+                            "content": [["type": "input_text", "text": "The preceding words were explicitly spoken while holding Mono. When they describe work, call focus_start with task and optional minutes (default 30). Never merely say you're ready. For questions use the appropriate tool. Keep existing safety/personality instructions."]]]])
                         send(["type": "response.create", "response": ["output_modalities": ["text"]]])
                     }
                 }
@@ -417,7 +417,7 @@ final class LiveVoice: NSObject, ObservableObject {
             lastErrorCode = error?["code"] as? String ?? "unknown"
             if lastErrorCode == "input_audio_buffer_commit_empty" {
                 awaitingQuestion = false; waitingForCommit = false
-                feedback = "No audio reached the voice session. Hold Bluey and try again."
+                feedback = "No audio reached the voice session. Hold Mono and try again."
                 setState(.listening)
             }
             let message = (error?["message"] as? String) ?? "Something went wrong."

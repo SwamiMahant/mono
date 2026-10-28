@@ -58,14 +58,14 @@ struct BlueySession: Codable, Identifiable, Equatable {
     var exportText: String {
         let time = DateFormatter()
         time.dateFormat = "h:mm:ss a"
-        var lines = ["Bluey session, \(started.formatted(date: .abbreviated, time: .shortened))", ""]
+        var lines = ["Mono session, \(started.formatted(date: .abbreviated, time: .shortened))", ""]
         for entry in displayEntries {
             let who: String
             switch entry.kind {
             case .transcript: who = "Speaker \(entry.speaker ?? "?")"
             case .heard: who = "You"
             case .asked: who = "You asked"
-            case .reply: who = "Bluey"
+            case .reply: who = "Mono"
             case .report: who = "Research"
             case .codex: who = "Codex"
             }
@@ -196,7 +196,7 @@ final class SessionStore: ObservableObject {
         guard let current else { return nil }
         let text = current.displayEntries
             .filter { $0.kind != .report }
-            .map { ($0.kind == .reply ? "Bluey: " : "") + $0.text }
+            .map { ($0.kind == .reply ? "Mono: " : "") + $0.text }
             .joined(separator: "\n")
         return text.isEmpty ? nil : String(text.suffix(limit))
     }

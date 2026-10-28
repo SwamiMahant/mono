@@ -11,7 +11,7 @@ final class FocusLinkProbe {
     private var timer: Timer?
     private var complete: ((Int32) -> Void)?
     private let began = Date()
-    private let task = "Bluey integration test: build the focus friend Mac and iPhone apps"
+    private let task = "Mono integration test: build the focus friend Mac and iPhone apps"
     private var phase = "discover"
     private var pausedAt = Date.distantFuture
     private var pausedElapsed = 0.0
@@ -57,7 +57,7 @@ final class FocusLinkProbe {
                 Task { @MainActor in
                 print("LIVE app transport: authenticated")
                 phase = "initial"
-                connection.send(Packet(hello: "Bluey integration probe"))
+                connection.send(Packet(hello: "Mono integration probe"))
                 send("focusSync")
                 }
             }

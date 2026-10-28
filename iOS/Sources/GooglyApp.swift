@@ -38,7 +38,7 @@ struct RootView: View {
             FocusFaceHUD(focus: focus, link: link, live: live, open: { showFocus = true }, pair: { scanPairing = true })
             SoundButton(link: link, live: live)
 
-            // Bluey's app: sessions, transcripts and settings.
+            // Mono's app: sessions, transcripts and settings.
             Button { showApp = true } label: {
                 Image(systemName: "square.grid.2x2.fill")
                     .font(.system(size: 14, weight: .semibold))
@@ -47,7 +47,7 @@ struct RootView: View {
                     .background(Circle().fill(Color.white.opacity(0.06)).frame(width: 34, height: 34))
             }
             .buttonStyle(.plain)
-            .accessibilityLabel("Open Bluey")
+            .accessibilityLabel("Open Mono")
             .padding(.top, 10)
             .padding(.trailing, 62)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
@@ -194,10 +194,10 @@ struct ModeIndicator: View {
     private var color: Color {
         switch state {
         case .asleep: return .clear
-        case .waking: return Color(hex: 0xFFD66B)
-        case .listening, .asking: return Color(hex: 0x4F8BFF)
-        case .thinking: return Color(hex: 0xC79BFF)
-        case .speaking: return Color(hex: 0xFF9AD0)
+        case .waking: return Color(hex: 0xD6D6D6)
+        case .listening, .asking: return Color(hex: 0x868686)
+        case .thinking: return Color(hex: 0xB4B4B4)
+        case .speaking: return Color(hex: 0xBEBEBE)
         }
     }
     private var border: CGFloat {

@@ -11,9 +11,9 @@ struct PairingView: View {
 
             VStack(alignment: .leading, spacing: 14) {
                 Text("Your little focus friend")
-                    .font(.fredoka(32))
-                    .foregroundStyle(Color(hex: 0xF4F1FA))
-                Text("Open Bluey's Mac menu > Pair iPhone (QR). Scan once, then we'll reconnect securely on the same Wi-Fi.")
+                    .font(.plexSans(32))
+                    .foregroundStyle(Color(hex: 0xF3F3F3))
+                Text("Open Mono's Mac menu > Pair iPhone (QR). Scan once, then we'll reconnect securely on the same Wi-Fi.")
                     .font(.plexSans(16))
                     .foregroundStyle(Color(hex: Palette.inkSoft))
                     .frame(maxWidth: 380, alignment: .leading)
@@ -27,7 +27,7 @@ struct PairingView: View {
                 Button(action: onPlay) {
                     Text("Pair Mac (scan QR)")
                         .font(.plexSans(15).weight(.semibold))
-                        .foregroundStyle(Color(hex: 0xF4F1FA))
+                        .foregroundStyle(Color(hex: 0xF3F3F3))
                         .padding(.horizontal, 18)
                         .frame(minHeight: 44)
                         .background(Color(hex: Palette.panel), in: RoundedRectangle(cornerRadius: 14))
@@ -57,9 +57,9 @@ private struct SleepyBlob: View {
                 }
                 .offset(y: -18)
                 Ellipse().fill(Color(hex: Palette.nose)).frame(width: 18, height: 12).offset(x: 4, y: 21)
-                Text("z").font(.fredoka(26)).foregroundStyle(Color(hex: Palette.berry3))
+                Text("z").font(.plexSans(26)).foregroundStyle(Color(hex: Palette.berry3))
                     .offset(x: 110, y: -95 - 4 * sin(t * 1.5))
-                Text("z").font(.fredoka(18)).foregroundStyle(Color(hex: Palette.berry4))
+                Text("z").font(.plexSans(18)).foregroundStyle(Color(hex: Palette.berry4))
                     .offset(x: 128, y: -122 - 4 * sin(t * 1.5 + 1))
             }
             .scaleEffect(1 + 0.02 * sin(t * 1.1), anchor: .bottom)

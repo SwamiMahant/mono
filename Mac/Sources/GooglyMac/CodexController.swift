@@ -2,7 +2,7 @@ import AppKit
 
 /// Runs Codex jobs for him: one `codex app-server` process (JSON-RPC over stdio), signed in with your
 /// ChatGPT account, with full access and no approvals (Riley's call; codex_stop and ⌃⌥S are the brakes).
-/// Every thread lives in ~/Documents/Bluey (one "Bluey" project in the Codex app). He starts threads, sends follow-ups, stops them, and passes Codex's
+/// Every thread lives in ~/Documents/Mono (one "Mono" project in the Codex app). He starts threads, sends follow-ups, stops them, and passes Codex's
 /// approval requests to you. Finished jobs and approvals come out through `onEvent`.
 @MainActor
 final class CodexController {
@@ -97,7 +97,7 @@ final class CodexController {
         buffer = Data()
         loaded = []
         let ready = Task { @MainActor in
-            _ = try await self.request("initialize", ["clientInfo": ["name": "bluey", "title": "Bluey", "version": "1.0"]])
+            _ = try await self.request("initialize", ["clientInfo": ["name": "bluey", "title": "Mono", "version": "1.0"]])
             self.notify("initialized")
         }
         self.ready = ready
@@ -246,7 +246,7 @@ final class CodexController {
             respond(id, result: ["permissions": asked.filter { !($0.value is NSNull) }, "scope": "session"])
         default:
             // Questions and sign-in prompts we can't answer by voice: say no so Codex carries on.
-            respond(id, error: "Bluey can't answer \(method).")
+            respond(id, error: "Mono can't answer \(method).")
         }
     }
 
@@ -273,14 +273,14 @@ final class CodexController {
         Task { try? await ensureRunning() }
     }
 
-    /// Starts a job in ~/Documents/Bluey and returns right away (Codex takes a while to spin up); problems
+    /// Starts a job in ~/Documents/Mono and returns right away (Codex takes a while to spin up); problems
     /// arrive through `onEvent`. A named project is passed to Codex as the repo to work on.
     func start(project query: String?, prompt: String) -> String {
         let prompt = prompt.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !prompt.isEmpty else { return "What should Codex do?" }
         guard Self.isInstalled else { return CodexError.notInstalled.localizedDescription }
         var full = prompt
-        var name = "Bluey"
+        var name = "Mono"
         if let query, !query.trimmingCharacters(in: .whitespaces).isEmpty {
             switch CodexProjects.resolve(query) {
             case .one(let project):
@@ -289,7 +289,7 @@ final class CodexController {
             case .many(let names):
                 return "Several projects match \"\(query)\": \(names.prefix(6).joined(separator: ", ")). Ask the user which one in one short line."
             case .none:
-                return "No project called \"\(query)\". Projects: \(CodexProjects.all().map(\.name).prefix(20).joined(separator: ", ")). Ask which one, or leave the project out to work in the Bluey folder."
+                return "No project called \"\(query)\". Projects: \(CodexProjects.all().map(\.name).prefix(20).joined(separator: ", ")). Ask which one, or leave the project out to work in the Mono folder."
             }
         }
         Task { @MainActor in
@@ -482,16 +482,16 @@ enum CodexProjects {
         return name?.isEmpty == false ? name : nil
     }
 
-    /// ~/Documents/Bluey: where every thread he starts lives. Made (as a git repo) on first use and added to
+    /// ~/Documents/Mono: where every thread he starts lives. Made (as a git repo) on first use and added to
     /// the Codex app's sidebar so his chats show up together.
     static func blueyFolder() throws -> URL {
         let fm = FileManager.default
-        let folder = fm.homeDirectoryForCurrentUser.appendingPathComponent("Documents/Bluey", isDirectory: true)
+        let folder = fm.homeDirectoryForCurrentUser.appendingPathComponent("Documents/Mono", isDirectory: true)
         if !fm.fileExists(atPath: folder.appendingPathComponent(".git").path) {
             try fm.createDirectory(at: folder, withIntermediateDirectories: true)
             let readme = folder.appendingPathComponent("README.md")
             if !fm.fileExists(atPath: readme.path) {
-                try "# Bluey\n\nCodex jobs started by Bluey, the blueberry on Riley's iPhone, run from here.\n"
+                try "# Mono\n\nCodex jobs started by Mono, the blueberry on Riley's iPhone, run from here.\n"
                     .write(to: readme, atomically: true, encoding: .utf8)
             }
             let git = Process()

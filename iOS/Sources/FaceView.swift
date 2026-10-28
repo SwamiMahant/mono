@@ -243,7 +243,7 @@ struct FaceView: View {
             let cheek = CGRect(x: c.x - 45 + side * 62, y: c.y + 96, width: 90, height: 42)
             var soft = ctx
             soft.addFilter(.blur(radius: 10))
-            soft.fill(Path(ellipseIn: cheek), with: .color(Color(hex: 0xF3A6D8, opacity: 0.25 + 0.45 * f.blush)))
+            soft.fill(Path(ellipseIn: cheek), with: .color(Color(hex: 0xC3C3C3, opacity: 0.25 + 0.45 * f.blush)))
         }
 
         for (i, c) in eyes.enumerated() {
@@ -325,7 +325,7 @@ struct FaceView: View {
                 let size = 26 + CGFloat(i) * 8
                 let point = CGPoint(x: body.minX + 660 + CGFloat(phase) * 70 + CGFloat(sin(phase * 6)) * 8,
                                     y: body.minY + 90 - CGFloat(phase) * 110)
-                ctx.draw(Text("z").font(.fredoka(size)).foregroundColor(.white.opacity(0.9 * sin(.pi * phase))), at: point)
+                ctx.draw(Text("z").font(.plexSans(size)).foregroundColor(.white.opacity(0.9 * sin(.pi * phase))), at: point)
             }
         }
 
@@ -351,7 +351,7 @@ struct FaceView: View {
             ctx.fill(Path(ellipseIn: nose), with: .color(navy))
             if f.talk > 0.25 {
                 let tongue = CGRect(x: nose.midX - noseW * 0.28, y: nose.maxY - noseH * 0.38, width: noseW * 0.56, height: noseH * 0.3)
-                ctx.fill(Path(ellipseIn: tongue), with: .color(Color(hex: 0xE58BC4, opacity: 0.9)))
+                ctx.fill(Path(ellipseIn: tongue), with: .color(Color(hex: 0xACACAC, opacity: 0.9)))
             }
         }
     }

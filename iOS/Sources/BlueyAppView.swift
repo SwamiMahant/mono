@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// Bluey's own app screen: start or end a session, see past sessions and their transcripts, and settings.
+/// Mono's own app screen: start or end a session, see past sessions and their transcripts, and settings.
 /// Opened from the faint button in the top-right corner of his face.
 struct BlueyAppView: View {
     @ObservedObject var store: SessionStore
@@ -40,12 +40,12 @@ struct BlueyAppView: View {
                     MiniBluey()
                         .frame(width: 54, height: 48)
                     VStack(alignment: .leading, spacing: 2) {
-                        Text("Bluey")
-                            .font(.fredoka(28))
+                        Text("Mono")
+                            .font(.plexSans(28))
                             .foregroundStyle(.white)
                         HStack(spacing: 6) {
                             Circle()
-                                .fill(link.connected ? Color(hex: 0x5BE49B) : Color(hex: Palette.inkSoft).opacity(0.5))
+                                .fill(link.connected ? Color(hex: 0xB3B3B3) : Color(hex: Palette.inkSoft).opacity(0.5))
                                 .frame(width: 7, height: 7)
                             Text(link.connected ? (link.macName ?? link.currentMac ?? "Mac") : "Looking for your Mac")
                                 .font(.plexSans(12))
@@ -67,14 +67,14 @@ struct BlueyAppView: View {
                         Image(systemName: live.state == .asleep ? "play.fill" : "stop.fill")
                         Text(live.state == .asleep ? "Start listening" : "Stop listening")
                     }
-                    .font(.fredoka(18))
+                    .font(.plexSans(18))
                     .foregroundStyle(.white)
                     .frame(maxWidth: .infinity, minHeight: 50)
                     .background {
                         if live.state == .asleep {
                             RoundedRectangle(cornerRadius: 16).fill(BlobShape.linear)
                         } else {
-                            RoundedRectangle(cornerRadius: 16).fill(Color(hex: 0xE5547A))
+                            RoundedRectangle(cornerRadius: 16).fill(Color(hex: 0x848484))
                         }
                     }
                 }
@@ -145,7 +145,7 @@ struct BlueyAppView: View {
         VStack(alignment: .leading, spacing: 0) {
             HStack {
                 Text("Voice history")
-                    .font(.fredoka(24))
+                    .font(.plexSans(24))
                     .foregroundStyle(.white)
                 Spacer()
                 Text("\(store.sessions.count)")
@@ -162,7 +162,7 @@ struct BlueyAppView: View {
                         .font(.system(size: 34))
                         .foregroundStyle(Color(hex: Palette.berry2))
                     Text("No sessions yet")
-                        .font(.fredoka(18))
+                        .font(.plexSans(18))
                         .foregroundStyle(.white)
                     Text("Start one and your transcript and his replies show up here.")
                         .font(.plexSans(13))
@@ -205,7 +205,7 @@ private struct SessionRow: View {
                             .foregroundStyle(.black)
                             .padding(.horizontal, 6)
                             .padding(.vertical, 2)
-                            .background(Color(hex: 0x5BE49B), in: Capsule())
+                            .background(Color(hex: 0xB3B3B3), in: Capsule())
                     }
                 }
                 Text(session.summary)
@@ -248,11 +248,11 @@ struct SessionDetailView: View {
             return p
         } ?? "\(root)/ (the folder starting \(session.started.formatted(.iso8601.year().month().day())))"
         let prompt = """
-        I recorded a meeting with my Bluey app on \(session.started.formatted(date: .complete, time: .shortened)). \
+        I recorded a meeting with my Mono app on \(session.started.formatted(date: .complete, time: .shortened)). \
         The notes are on my Mac in \(path)
 
         - notes.md: the full transcript with timestamps and speaker labels (A, B, … per five-minute chunk), plus \
-        my questions to Bluey, its replies and research reports. Start here.
+        my questions to Mono, its replies and research reports. Start here.
         - session.json: the same data, structured.
         - audio/: the original recording in five-minute chunks.
 
@@ -281,7 +281,7 @@ struct SessionDetailView: View {
                 .buttonStyle(.plain)
                 VStack(alignment: .leading, spacing: 2) {
                     Text(session?.started.formatted(date: .abbreviated, time: .shortened) ?? "Session")
-                        .font(.fredoka(20))
+                        .font(.plexSans(20))
                         .foregroundStyle(.white)
                     if let session {
                         Text("\(SessionRow.duration(session.duration)) · \(session.questionCount) asked"
@@ -338,7 +338,7 @@ struct SessionDetailView: View {
 
 private struct EntryView: View {
     static func speakerColor(_ speaker: String?) -> Color {
-        let colors: [UInt32] = [0x8FB3FF, 0x5BE49B, 0xFFB86B, 0xFF9AD0, 0xC79BFF, 0x6BE3E0]
+        let colors: [UInt32] = [0xB1B1B1, 0xB3B3B3, 0xC4C4C4, 0xBEBEBE, 0xB4B4B4, 0xBFBFBF]
         guard let first = speaker?.unicodeScalars.first?.value, speaker != "?" else { return Color(hex: Palette.inkSoft) }
         return Color(hex: colors[Int(first) % colors.count])
     }
@@ -389,7 +389,7 @@ private struct EntryView: View {
             HStack(alignment: .bottom, spacing: 8) {
                 MiniBluey().frame(width: 28, height: 25)
                 Text(entry.text)
-                    .font(.fredoka(16))
+                    .font(.plexSans(16))
                     .foregroundStyle(Color(hex: Palette.ink))
                     .padding(.horizontal, 14)
                     .padding(.vertical, 10)
@@ -416,7 +416,7 @@ private struct EntryView: View {
                     HStack(spacing: 8) {
                         Image(systemName: "doc.text.magnifyingglass").foregroundStyle(Color(hex: Palette.berry2))
                         Text(lines.first ?? "Research")
-                            .font(.fredoka(16))
+                            .font(.plexSans(16))
                             .foregroundStyle(Color(hex: Palette.ink))
                             .multilineTextAlignment(.leading)
                         Spacer()
@@ -434,7 +434,7 @@ private struct EntryView: View {
                     .lineLimit(open ? nil : 3)
             }
             .padding(14)
-            .background(Color(hex: 0xEEF0FF), in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+            .background(Color(hex: 0xF1F1F1), in: RoundedRectangle(cornerRadius: 18, style: .continuous))
             .overlay(RoundedRectangle(cornerRadius: 18, style: .continuous).strokeBorder(Color(hex: Palette.berry2), lineWidth: 2))
             .padding(.leading, 36)
             .padding(.trailing, 80)
@@ -442,7 +442,7 @@ private struct EntryView: View {
     }
 }
 
-/// A tiny Bluey: the blob with two googly eyes.
+/// A tiny Mono: the blob with two googly eyes.
 struct MiniBluey: View {
     var body: some View {
         GeometryReader { geo in

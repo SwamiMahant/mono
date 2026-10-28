@@ -18,7 +18,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         Fonts.registerBundled()
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         statusItem.button?.image = MenuIcon.make()
-        statusItem.button?.toolTip = "Bluey"
+        statusItem.button?.toolTip = "Mono"
         let menu = NSMenu()
         menu.delegate = self
         statusItem.menu = menu
@@ -135,7 +135,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         panel.canChooseFiles = false
         panel.allowsMultipleSelection = true
         panel.prompt = "Add"
-        panel.message = "Folders Codex can work in when you ask Bluey"
+        panel.message = "Folders Codex can work in when you ask Mono"
         guard panel.runModal() == .OK else { return }
         CodexProjects.added = CodexProjects.added + panel.urls.map(\.path).filter { !CodexProjects.added.contains($0) }
     }
@@ -219,7 +219,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         server.broadcast(Packet(command: host.awake ? "sleep" : "wake"))
     }
 
-    /// On launch, asks for whatever he still needs (so Bluey shows up in those Settings lists),
+    /// On launch, asks for whatever he still needs (so Mono shows up in those Settings lists),
     /// and keeps a small status file so it's easy to check what's allowed.
     private func checkPermissions() {
         guard ProcessInfo.processInfo.environment["GOOGLY_DEMO_OUT"] == nil else { return }
@@ -413,7 +413,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         menu.addItem(show)
 
         menu.addItem(.separator())
-        menu.addItem(NSMenuItem(title: "Quit Bluey", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
+        menu.addItem(NSMenuItem(title: "Quit Mono", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
     }
 
     /// Menu item that shows its global shortcut (⌃⌥ + key) when given one.

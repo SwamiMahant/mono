@@ -71,7 +71,7 @@ final class FocusCompanion {
             })
         }
     }
-    func shutdown() { pause("Bluey closed"); timer?.invalidate(); cancel() }
+    func shutdown() { pause("Mono closed"); timer?.invalidate(); cancel() }
     func heartbeat() { lastPing = now(); connected = true; if !monitoring { publish() } }
     func disconnected() { connected = false; pause("Phone disconnected. Reconnect, then resume.") }
     func sync() { publish() }
@@ -100,8 +100,8 @@ final class FocusCompanion {
         guard minutes.isFinite else { return "Use a duration between 1 and 240 minutes." }
         guard !hasSession else { return "There's already a focus session. End it before starting another." }
         guard freshConnection else { return "Connect the paired phone first." }
-        guard permission() else { return "Screen Recording is off. Enable Bluey in System Settings > Privacy & Security > Screen Recording, then reopen Bluey." }
-        guard hasKey() else { return "Add your OpenAI key in Bluey's Mac menu." }
+        guard permission() else { return "Screen Recording is off. Enable Mono in System Settings > Privacy & Security > Screen Recording, then reopen Mono." }
+        guard hasKey() else { return "Add your OpenAI key in Mono's Mac menu." }
         cancel()
         current = FocusSession(task: task, duration: min(240, max(1, minutes)) * 60, developerMode: developerMode)
         policy = FocusNudgePolicy(maximumGap: current!.observationDuration * 1.5, developerMode: developerMode)
@@ -117,7 +117,7 @@ final class FocusCompanion {
     @discardableResult func resume() -> String {
         guard current?.status == .paused else { return "There's no paused focus session." }
         guard freshConnection else { return "Reconnect the paired phone before resuming." }
-        guard permission() else { return "Screen Recording permission is missing. Enable it in System Settings, then reopen Bluey." }
+        guard permission() else { return "Screen Recording permission is missing. Enable it in System Settings, then reopen Mono." }
         current?.resume(); policy.reset(); cancel()
         lastTick = now(); lastCheck = current?.elapsed ?? 0
         publish(); persist(); return "Focus resumed."
@@ -145,7 +145,7 @@ final class FocusCompanion {
         guard monitoring else { return }
         guard freshConnection else { pause("Phone disconnected. Reconnect, then resume."); return }
         guard unlocked else { pause("Mac locked. Resume when ready."); return }
-        guard permission() else { pause("Screen Recording permission lost. Enable it, then reopen Bluey."); return }
+        guard permission() else { pause("Screen Recording permission lost. Enable it, then reopen Mono."); return }
         if now() - lastTick > 3 { pause("Mac was inactive. Resume when ready."); return }
         advanceClock()
         if current?.status == .ended { finish(); return }
@@ -203,7 +203,7 @@ final class FocusCompanion {
                     }
                     guard self.allowed, self.generation == token, !Task.isCancelled else { return }
                     self.onNudge?(nudge.message, target)
-                    self.current?.detail = "Off task · Bluey nudged you"
+                    self.current?.detail = "Off task · Mono nudged you"
                     check.nudged = true
                     if let index = self.current?.checks.firstIndex(where: { $0.id == check.id }) { self.current?.checks[index] = check }
                     self.publish(); self.persist()

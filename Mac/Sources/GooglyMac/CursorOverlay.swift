@@ -513,10 +513,10 @@ final class CursorView: NSView {
             eyes.append((socket, white, pupil))
         }
 
-        // A clean white cloud with a faint blueberry tint at the bottom and a berry outline. No glow.
+        // A clean white cloud with a faint gray tint at the bottom and a gray outline. No glow.
         speech.fillColor = NSColor.white.cgColor
         speech.opacity = 0
-        speechFill.colors = [NSColor.white.cgColor, NSColor(hex: 0xEEF0FF).cgColor]
+        speechFill.colors = [NSColor.white.cgColor, NSColor(hex: 0xF1F1F1).cgColor]
         speechFill.startPoint = CGPoint(x: 0.5, y: 1)
         speechFill.endPoint = CGPoint(x: 0.5, y: 0)
         speechFill.mask = speechFillMask
