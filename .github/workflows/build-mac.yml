@@ -1,0 +1,14 @@
+name: Build Mac
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Mac app
+        run: ./scripts/build-mac.sh

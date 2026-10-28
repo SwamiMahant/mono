@@ -1,0 +1,22 @@
+name: Build iOS
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install xcodegen
+        run: brew install xcodegen
+      - name: Generate project
+        run: xcodegen generate
+      - name: Build iOS app
+        run: |
+          xcodebuild -project GooglyEyes.xcodeproj -scheme GooglyEyes \
+            -configuration Debug -destination 'generic/platform=iOS' \
+            -derivedDataPath /tmp/BlueyFocusDerivedData build \
+            CODE_SIGNING_ALLOWED=NO
