@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mono</title>
+<style>
+  :root { --bg:#000; --fg:#fff; --muted:#888; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font-family: -apple-system, "IBM Plex Sans", sans-serif; }
+  .wrap { max-width:480px; margin:0 auto; padding:24px; }
+  h1 { font-size:28px; letter-spacing:2px; }
+  input, button { width:100%; padding:12px; margin:8px 0; border:1px solid #333; background:#111; color:#fff; border-radius:8px; font-size:16px; }
+  button { background:#fff; color:#000; font-weight:600; cursor:pointer; }
+  #preview { width:100%; border:1px solid #333; border-radius:8px; margin-top:12px; }
+  .muted { color:var(--muted); font-size:13px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>MONO</h1>
+  <p class="muted">Modern, monochrome focus companion. Runs on your Linux PC; open this page on your iPhone.</p>
+  <input id="task" placeholder="What are we working on?">
+  <input id="mins" type="number" value="30" min="1" max="240">
+  <button onclick="start()">Start focus</button>
+  <button onclick="capture()">Capture screen</button>
+  <img id="preview" alt="screen capture">
+  <p id="status" class="muted"></p>
+</div>
+<script>
+async function start(){
+  const r = await fetch('/focus',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({task:document.getElementById('task').value,minutes:document.getElementById('mins').value})});
+  const d = await r.json();
+  document.getElementById('status').textContent = 'Started: '+d.task+' ('+d.minutes+' min)';
+}
+async function capture(){
+  const r = await fetch('/capture'); const d = await r.json();
+  document.getElementById('preview').src = d.image;
+}
+</script>
+</body>
+</html>
